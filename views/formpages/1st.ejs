@@ -206,7 +206,14 @@
                       <div class="col-md-4">
                         <select id="dept" name="applicationdetails[dept]" class="form-control input-md" required="">
                           <option value="">Select</option>
-                          <option selected='selected' value="Chemical Engineering">Chemical Engineering</option>
+                          <!--<option selected='selected' value="Chemical Engineering">Chemical Engineering</option>-->
+                          <option value="Chemical Engineering" <% if (applicationdetails.dept === 'Chemical Engineering') { %> selected <% } %>>Chemical Engineering</option>                          
+                          <option value="Computer Science Engineering" <% if (applicationdetails.dept === 'Computer Science Engineering') { %> selected <% } %>>Computer Science Engineering</option>                          
+                          <option value="Electrical Engineering" <% if (applicationdetails.dept === 'Electrical Engineering') { %> selected <% } %>>Electrical Engineering</option>                          
+                          <option value="Mechanical Engineering" <% if (applicationdetails.dept === 'Mechanical Engineering') { %> selected <% } %>>Mechanical Engineering</option>                          
+                          <option value="Civil Engineering" <% if (applicationdetails.dept === 'Civil Engineering') { %> selected <% } %>>Civil Engineering</option>                          
+
+                          </option>
                         </select>
 
                       </div>

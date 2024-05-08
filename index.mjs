@@ -43,7 +43,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "ani",
   password: "ani",
-  database: "DBMS_pro",
+  database: "DBMS_pro2",
 });
 
 // Connect to MySQL

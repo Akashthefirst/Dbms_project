@@ -1302,6 +1302,26 @@ app.get("/formpages/8", isAuthenticated, (req, res) => {
       });
     }
   );
+  db.query(
+    "SELECT phd_path FROM page_8 WHERE email = ?",
+    [userEmail],
+    (err, rows) => {
+      if (err) {
+        console.error("Error retrieving PHD certificate path:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      if (rows.length === 0) {
+        return res.status(404).send("PHD certificate not found");
+      }
+      const phdCertificatePath = rows[0].phd_path;
+      res.render("formpages/9th.ejs", {
+        firstname: req.session.currUser.first_name,
+        lastname: req.session.currUser.last_name,
+        phdCertificatePath: phdCertificatePath ? phdCertificatePath.replace(/\\/g, '/') : null, // Convert Windows path separators to web path separators
+      });
+    }
+  );
+
 });
 
 app.post("/formpages/8", isAuthenticated, (req, res) => {

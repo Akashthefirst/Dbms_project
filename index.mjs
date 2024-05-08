@@ -138,7 +138,11 @@ db.query(`CREATE TABLE IF NOT EXISTS page_8 (
   noc_path VARCHAR(255) NULL,
   post_path VARCHAR(255) NULL,
   misc_path VARCHAR(255) NULL,
-  sign_path VARCHAR(255) NULL)`);
+  sign_path VARCHAR(255) NULL,
+  research_path VARCHAR(255) NULL)`);
+
+  db.query(`ALTER TABLE page_8
+  ADD COLUMN research_path VARCHAR(255);`);
 
 db.query(`CREATE TABLE IF NOT EXISTS educationaldetails (
     id INT AUTO_INCREMENT PRIMARY KEY,

@@ -1298,8 +1298,9 @@ app.post("/formpages/7", isAuthenticated, (req, res) => {
 
 app.get("/formpages/8", isAuthenticated, (req, res) => {
   const userEmail = req.session.currUser.email;
+  console.log("Fetching profile data for email:", userEmail);
   db.query(
-    "SELECT first_name, last_name FROM profile WHERE email = ?",
+    "SELECT profile.first_name, profile.last_name,page_8.phd_path FROM profile LEFT JOIN page_8 ON profile.email=page_8.email WHERE profile.email = ?",
     [userEmail],
     (err, rows) => {
       if (err) {
@@ -1309,10 +1310,12 @@ app.get("/formpages/8", isAuthenticated, (req, res) => {
       if (rows.length === 0) {
         return res.status(404).send("Profile not found");
       }
-      const { first_name, last_name } = rows[0];
+      const { first_name, last_name, phd_path } = rows[0];
+      const absolutePhdPath = `/${phd_path}`;
       res.render("formpages/8th.ejs", {
         firstname: first_name,
         lastname: last_name,
+        phdPath: absolutePhdPath,
       });
     }
   );

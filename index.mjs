@@ -528,7 +528,7 @@ app.post('/upload', upload.fields([
       res.status(500).send('Internal Server Error');
       return;
     }
-    res.send('Files uploaded successfully');
+    res.redirect("/formpages/9");
   });
 });
 
@@ -1327,7 +1327,7 @@ app.get("/formpages/9", isAuthenticated, (req, res) => {
 });
 
 app.post("/formpages/9", isAuthenticated, (req, res) => {
-  res.redirect("/formpages/10");
+  res.send("Files Successfully Submitted");
 });
 
 function isAuthenticated(req, res, next) {

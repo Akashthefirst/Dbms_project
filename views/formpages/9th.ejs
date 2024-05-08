@@ -132,7 +132,7 @@
     
     <!-- publication file upload           -->
     
-    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" onsubmit="return confirm_box()">
     
     
     <!-- Payment file upload           -->
@@ -180,7 +180,7 @@
     <div class="col-md-12">
       <!-- <a href="https://ofa.iiti.ac.in/facrec_che_2023_july_02/acde" class="btn btn-primary pull-left">BACK</a> -->
       <a href="/formpages/8" class="btn btn-primary pull-left"><i class="glyphicon glyphicon-fast-backward"></i></a>
-      <button type="submit" name="preview"  value="preview" class="btn btn-info pull-right">SAVE & SUBMIT</button>
+      <button type="submit" name="preview"  value="preview" class="btn btn-info pull-right" >SAVE & SUBMIT</button>
       <!-- <button type="submit" name="submit" value="Submit" class="btn btn-success">SAVE</button> -->
     
     
@@ -212,7 +212,6 @@
     }
     function submit_frm()
     {
-      alert();
       document.getElementById("upload_frm").submit();
     }
     </script>

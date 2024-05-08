@@ -504,7 +504,8 @@ app.post('/upload', upload.fields([
   { name: 'nocUndertaking' },
   { name: 'postPhdExperience' },
   { name: 'miscCertificate' },
-  { name: 'signature' }
+  { name: 'signature'}, 
+  { name: 'researchPapers'}
 ]), (req, res) => {
   let page_8 = {
     email: req.session.currUser.email,
@@ -517,7 +518,8 @@ app.post('/upload', upload.fields([
     noc_path: req.files['nocUndertaking'] ? req.files['nocUndertaking'][0].path : null,
     post_path: req.files['postPhdExperience'] ? req.files['postPhdExperience'][0].path : null,
     misc_path: req.files['miscCertificate'] ? req.files['miscCertificate'][0].path : null,
-    sign_path: req.files['signature'] ? req.files['signature'][0].path : null
+    sign_path: req.files['signature'] ? req.files['signature'][0].path : null,
+    research_path: req.files['researchPapers'] ? req.files['researchPapers'][0].path : null
   };
 
   db.query('INSERT INTO page_8 SET ?', page_8, (err, result) => {

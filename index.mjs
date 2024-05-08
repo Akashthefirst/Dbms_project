@@ -1300,7 +1300,7 @@ app.get("/formpages/8", isAuthenticated, (req, res) => {
   const userEmail = req.session.currUser.email;
   console.log("Fetching profile data for email:", userEmail);
   db.query(
-    "SELECT profile.first_name, profile.last_name,page_8.phd_path FROM profile LEFT JOIN page_8 ON profile.email=page_8.email WHERE profile.email = ?",
+    "SELECT profile.first_name, profile.last_name,page_8.phd_path,page_8.pg_path,page_8.ug_path,page_8.tw_path,page_8.te_path,page_8.pay_path,page_8.noc_path,page_8.post_path,page_8.misc_path,page_8.sign_path FROM profile LEFT JOIN page_8 ON profile.email=page_8.email WHERE profile.email = ?",
     [userEmail],
     (err, rows) => {
       if (err) {
@@ -1310,12 +1310,31 @@ app.get("/formpages/8", isAuthenticated, (req, res) => {
       if (rows.length === 0) {
         return res.status(404).send("Profile not found");
       }
-      const { first_name, last_name, phd_path } = rows[0];
+      const { first_name, last_name,phd_path,pg_path,ug_path,tw_path,te_path,pay_path,noc_path,post_path,misc_path, sign_path} = rows[0];
       const absolutePhdPath = `/${phd_path}`;
+      const absolutePgPath = `/${pg_path}`;
+      const absoluteUgPath = `/${ug_path}`;
+      const absoluteTwPath = `/${tw_path}`;
+      const absoluteTePath = `/${te_path}`;
+      const absolutePayPath = `/${pay_path}`;
+      const absoluteNocPath = `/${noc_path}`;
+      const absolutePostPath = `/${post_path}`;
+      const absoluteMiscPath = `/${misc_path}`;
+      const absoluteSignPath = `/${sign_path}`;
+    
       res.render("formpages/8th.ejs", {
         firstname: first_name,
         lastname: last_name,
         phdPath: absolutePhdPath,
+        pgPath: absolutePgPath,
+        ugPath: absoluteUgPath,
+        twPath: absoluteTwPath,
+        tePath: absoluteTePath,
+        payPath: absolutePayPath,
+        nocPath: absoluteNocPath,
+        postPath: absolutePostPath,
+        miscPath: absoluteMiscPath,
+        signPath: absoluteSignPath,
       });
     }
   );

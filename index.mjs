@@ -53,7 +53,22 @@ db.connect((err) => {
   } else {
     console.log("MySQL connected");
   }
-});
+}); 
+ db.on('error', (err) => {
+  console.error('MySQL connection error:', err);
+  if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+     // Attempt to re-establish connection.
+     db.connect((err) => {
+       if (err) {
+         console.error('Error reconnecting to MySQL:', err);
+         return;
+       }
+       console.log("MySQL reconnected");
+     });
+  } else {
+     throw err; // Don't know what to do with this kind of error
+  }
+ });
 
 // Session middleware
 app.use(
@@ -141,8 +156,7 @@ db.query(`CREATE TABLE IF NOT EXISTS page_8 (
   sign_path VARCHAR(255) NULL,
   research_path VARCHAR(255) NULL)`);
 
-  db.query(`ALTER TABLE page_8
-  ADD COLUMN research_path VARCHAR(255);`);
+
 
 db.query(`CREATE TABLE IF NOT EXISTS educationaldetails (
     id INT AUTO_INCREMENT PRIMARY KEY,

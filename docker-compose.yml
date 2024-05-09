@@ -11,7 +11,7 @@ services:
     volumes:
       - mysqldb_data:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "3306:3306"
     networks:
       - internalnetwork
 
@@ -28,8 +28,8 @@ services:
     environment:
       DB_HOST: "mysqldb"
       DB_PORT: 3306
-      DB_USER: "ani"
-      DB_PASSWORD: "ani"
+      DB_USER: "root"
+      DB_PASSWORD: "India@2022"
       DB_NAME: "DBMS_pro2"
     networks:
       - internalnetwork

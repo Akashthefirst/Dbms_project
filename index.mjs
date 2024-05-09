@@ -1367,7 +1367,7 @@ app.get("/formpages/9", isAuthenticated, (req, res) => {
 });
 
 app.post("/formpages/9", isAuthenticated, (req, res) => {
-  res.send("Files Successfully Submitted");
+  res.redirect("/printform");
 });
 
 function isAuthenticated(req, res, next) {

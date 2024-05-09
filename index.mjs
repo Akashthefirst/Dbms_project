@@ -1390,3 +1390,305 @@ app.get("/logout", (req, res) => {
 app.listen(8000, () => {
   console.log(`Server is running on port 8000`);
 });
+
+
+app.get("/printform", (req, res) => {
+  const userEmail = req.session.currUser.email;
+  db.query(
+    "SELECT * FROM profile WHERE email = ?",
+    [userEmail],
+    (err, rows) => {
+      if (err) {
+        console.error("Error retrieving profile data:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      if (rows.length === 0) {
+        return res.status(404).send("Profile not found");
+      }
+      db.query(
+        "SELECT * FROM personaldetails WHERE email = ?",
+        [userEmail],
+        (err, personalRows) => {
+          if (err) {
+            console.error("Error retrieving personal details:", err);
+            return res.status(500).send("Internal Server Error");
+          }
+          db.query(
+            "SELECT * FROM page_8_upload WHERE email = ?",
+            [userEmail],
+            (err, uploadRows) => {
+              if (err) {
+                console.error("Error retrieving upload details:", err);
+                return res.status(500).send("Internal Server Error");
+              }
+              db.query(
+                "SELECT * FROM datapage WHERE email = ?",
+                [userEmail],
+                (err, datapagerow) => {
+                  if (err) {
+                    console.error("Error retrieving upload details:", err);
+                    return res.status(500).send("Internal Server Error");
+                  }
+                  db.query(
+                    "SELECT * FROM educationaldetails WHERE email = ?",
+                    [userEmail],
+                    (err, educationaldetails) => {
+                      if (err) {
+                        console.error("Error retrieving upload details:", err);
+                        return res.status(500).send("Internal Server Error");
+                      }
+
+                      let eddu = (educationaldetails && educationaldetails.length > 0) ? educationaldetails[0].id : null;
+
+                      db.query(
+                        "SELECT * FROM edu_additionaldetails WHERE educationaldetails_id = ?",
+                        [eddu],
+                        (err, edu_additionaldetails) => {
+                          if (err) {
+                            console.error("Error retrieving upload details:", err);
+                            return res.status(500).send("Internal Server Error");
+                          }
+                          db.query(
+                            "SELECT * FROM datapage WHERE email = ?",
+                            [userEmail],
+                            (err, publications) => {
+                              if (err) {
+                                console.error("Error retrieving upload details:", err);
+                                return res.status(500).send("Internal Server Error");
+                              }
+                              db.query(
+                                "SELECT * FROM presentemployment WHERE email = ?",
+                                [userEmail],
+                                (err, present) => {
+                                  if (err) {
+                                    console.error("Error retrieving upload details:", err);
+                                    return res.status(500).send("Internal Server Error");
+                                  }
+                                  db.query(
+                                    "SELECT * FROM employmenthistory WHERE email = ?",
+                                    [userEmail],
+                                    (err, employhist) => {
+                                      if (err) {
+                                        console.error("Error retrieving upload details:", err);
+                                        return res.status(500).send("Internal Server Error");
+                                      }
+                                      db.query(
+                                        "SELECT * FROM teachingexp WHERE email = ?",
+                                        [userEmail],
+                                        (err, teaching) => {
+                                          if (err) {
+                                            console.error("Error retrieving upload details:", err);
+                                            return res.status(500).send("Internal Server Error");
+                                          }
+                                          db.query(
+                                            "SELECT * FROM researchexp WHERE email = ?",
+                                            [userEmail],
+                                            (err, research) => {
+                                              if (err) {
+                                                console.error("Error retrieving upload details:", err);
+                                                return res.status(500).send("Internal Server Error");
+                                              }
+                                              db.query(
+                                                "SELECT * FROM industrialexp WHERE email = ?",
+                                                [userEmail],
+                                                (err, Industrial) => {
+                                                  if (err) {
+                                                    console.error("Error retrieving upload details:", err);
+                                                    return res.status(500).send("Internal Server Error");
+                                                  }
+                                                  db.query(
+                                                    "SELECT * FROM aos_aor WHERE email = ?",
+                                                    [userEmail],
+                                                    (err, aosaor) => {
+                                                      if (err) {
+                                                        console.error("Error retrieving upload details:", err);
+                                                        return res.status(500).send("Internal Server Error");
+                                                      }
+                                                      db.query(
+                                                        "SELECT * FROM publications WHERE email = ?",
+                                                        [userEmail],
+                                                        (err, publications) => {
+                                                          if (err) {
+                                                            console.error("Error retrieving upload details:", err);
+                                                            return res.status(500).send("Internal Server Error");
+                                                          }
+
+                                                          db.query(
+                                                            "SELECT * FROM top10publications WHERE email = ?",
+                                                            [userEmail],
+                                                            (err, top10publications) => {
+                                                              if (err) {
+                                                                console.error("Error retrieving upload details:", err);
+                                                                return res.status(500).send("Internal Server Error");
+                                                              }
+
+                                                              db.query(
+                                                                "SELECT * FROM patents WHERE email = ?",
+                                                                [userEmail],
+                                                                (err, patents) => {
+                                                                  if (err) {
+                                                                    console.error("Error retrieving upload details:", err);
+                                                                    return res.status(500).send("Internal Server Error");
+                                                                  }
+
+                                                                  db.query(
+                                                                    "SELECT * FROM books WHERE email = ?",
+                                                                    [userEmail],
+                                                                    (err, books) => {
+                                                                      if (err) {
+                                                                        console.error("Error retrieving upload details:", err);
+                                                                        return res.status(500).send("Internal Server Error");
+                                                                      }
+
+                                                                      db.query(
+                                                                        "SELECT * FROM book_chapters WHERE email = ?",
+                                                                        [userEmail],
+                                                                        (err, book_chapters) => {
+                                                                          if (err) {
+                                                                            console.error("Error retrieving upload details:", err);
+                                                                            return res.status(500).send("Internal Server Error");
+                                                                          }
+                                                                          db.query(
+                                                                            "SELECT * FROM googlelink WHERE email = ?",
+                                                                            [userEmail],
+                                                                            (err, googlelink) => {
+                                                                              if (err) {
+                                                                                console.error("Error retrieving upload details:", err);
+                                                                                return res.status(500).send("Internal Server Error");
+                                                                              }
+                                                                              db.query(
+                                                                                "SELECT * FROM membership WHERE email = ?",
+                                                                                [userEmail],
+                                                                                (err, membership) => {
+                                                                                  if (err) {
+                                                                                    console.error("Error retrieving upload details:", err);
+                                                                                    return res.status(500).send("Internal Server Error");
+                                                                                  }
+                                                                                  db.query(
+                                                                                    "SELECT * FROM training WHERE email = ?",
+                                                                                    [userEmail],
+                                                                                    (err, training) => {
+                                                                                      if (err) {
+                                                                                        console.error("Error retrieving upload details:", err);
+                                                                                        return res.status(500).send("Internal Server Error");
+                                                                                      }
+                                                                                      db.query(
+                                                                                        "SELECT * FROM awards WHERE email = ?",
+                                                                                        [userEmail],
+                                                                                        (err, awards) => {
+                                                                                          if (err) {
+                                                                                            console.error("Error retrieving upload details:", err);
+                                                                                            return res.status(500).send("Internal Server Error");
+                                                                                          }
+                                                                                          db.query(
+                                                                                            "SELECT * FROM phd_thesis WHERE email = ?",
+                                                                                            [userEmail],
+                                                                                            (err, phd_thesis) => {
+                                                                                              if (err) {
+                                                                                                console.error("Error retrieving upload details:", err);
+                                                                                                return res.status(500).send("Internal Server Error");
+                                                                                              }
+                                                                                              db.query(
+                                                                                                "SELECT * FROM pg_thesis WHERE email = ?",
+                                                                                                [userEmail],
+                                                                                                (err, pg_thesis) => {
+                                                                                                  if (err) {
+                                                                                                    console.error("Error retrieving upload details:", err);
+                                                                                                    return res.status(500).send("Internal Server Error");
+                                                                                                  }
+                                                                                                  db.query(
+                                                                                                    "SELECT * FROM ug_thesis WHERE email = ?",
+                                                                                                    [userEmail],
+                                                                                                    (err, ug_thesis) => {
+                                                                                                      if (err) {
+                                                                                                        console.error("Error retrieving upload details:", err);
+                                                                                                        return res.status(500).send("Internal Server Error");
+                                                                                                      }
+                                                                                                      db.query(
+                                                                                                        "SELECT * FROM sponsoredprojects WHERE email = ?",
+                                                                                                        [userEmail],
+                                                                                                        (err, sponsoredprojects) => {
+                                                                                                          if (err) {
+                                                                                                            console.error("Error retrieving upload details:", err);
+                                                                                                            return res.status(500).send("Internal Server Error");
+                                                                                                          }
+                                                                                                          db.query(
+                                                                                                            "SELECT * FROM consultancyprojects WHERE email = ?",
+                                                                                                            [userEmail],
+                                                                                                            (err, consultancyprojects) => {
+                                                                                                              if (err) {
+                                                                                                                console.error("Error retrieving upload details:", err);
+                                                                                                                return res.status(500).send("Internal Server Error");
+
+                                                                                                              }
+                                                                                                              db.query(
+                                                                                                                "SELECT * FROM datapage WHERE email = ?",
+                                                                                                                [userEmail],
+                                                                                                                (err, datapage) => {
+                                                                                                                  if (err) {
+                                                                                                                    console.error("Error retrieving upload details:", err);
+                                                                                                                    return res.status(500).send("Internal Server Error");
+
+                                                                                                                  }
+                                                                                                                  db.query(
+                                                                                                                    "SELECT * FROM page_7 WHERE email = ?",
+                                                                                                                    [userEmail],
+                                                                                                                    (err, page_7) => {
+                                                                                                                      if (err) {
+                                                                                                                        console.error("Error retrieving upload details:", err);
+                                                                                                                        return res.status(500).send("Internal Server Error");
+
+                                                                                                                      }
+                                                                                                                      db.query(
+                                                                                                                        "SELECT * FROM applicationdetails WHERE email = ?",
+                                                                                                                        [userEmail],
+                                                                                                                        (err, applicationdetails) => {
+                                                                                                                          if (err) {
+                                                                                                                            console.error("Error retrieving upload details:", err);
+                                                                                                                            return res.status(500).send("Internal Server Error");
+
+                                                                                                                          }
+                                                                                                                          let sign_path = req.session.signpath ? req.session.signpath : null;
+                                                                                                                  
+                                                                                                                          let imagePath = req.session.image_path ? req.session.image_path : null;
+                                                                                                              
+                                                                                                                          res.render("formpages/print.ejs", {
+                                                                                                                            rows, personalRows, educationaldetails,
+                                                                                                                            research, Industrial,
+                                                                                                                            edu_additionaldetails, present, employhist, teaching, aosaor, publications, top10publications, patents, book_chapters, books, googlelink, pg_thesis, ug_thesis, phd_thesis, awards, training, membership, sponsoredprojects, consultancyprojects, datapage, imagePath, page_7
+                                                                                                                            , sign_path, applicationdetails
+                                                                                                                          });
+                                                                                                                        });
+                                                                                                                    });
+                                                                                                                });
+                                                                                                            });
+                                                                                                        });
+                                                                                                    });
+                                                                                                });
+                                                                                            });
+                                                                                        });
+                                                                                    });
+                                                                                });
+                                                                            });
+                                                                        });
+                                                                    });
+                                                                });
+                                                            });
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+});
+
+
+// res.render("formpages/print.ejs");

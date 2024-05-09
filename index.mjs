@@ -156,6 +156,17 @@ db.query(`CREATE TABLE IF NOT EXISTS page_8 (
   sign_path VARCHAR(255) NULL,
   research_path VARCHAR(255) NULL)`);
 
+  db.query(`CREATE TABLE IF NOT EXISTS datapage (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    email07 VARCHAR(255) NOT NULL,
+    ref_name VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) NOT NULL,
+   position VARCHAR(255) NOT NULL,
+   association_referee VARCHAR(255) NOT NULL,
+   org VARCHAR(255) NOT NULL
+  )`);
+
 
 
 db.query(`CREATE TABLE IF NOT EXISTS educationaldetails (
@@ -406,6 +417,17 @@ db.query(`CREATE TABLE IF NOT EXISTS ug_thesis (
   ug_year VARCHAR(255)
 )`);
 
+db.query(`CREATE TABLE IF NOT EXISTS page_7 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255),
+  research_statement VARCHAR(255),
+  teaching_statement VARCHAR(255),
+  rel_in VARCHAR(255),
+  prof_serv VARCHAR(255),
+  jour_details VARCHAR(255),
+  conf_details VARCHAR(255)
+)`);
+
 // Passport local strategy
 passport.use(
   new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
@@ -546,6 +568,35 @@ app.post('/upload', upload.fields([
       res.status(500).send('Internal Server Error');
       return;
     }
+    // Delete all existing rows in the datapage table
+    db.query("DELETE FROM datapage", (err, result) => {
+      if (err) throw err;
+      // Insert or update rows based on new data
+      for (let i = 0; i < req.body.ref_name.length; i++) {
+        let data2 = {
+          id: null,
+          email: req.session.currUser.email,
+          email07: req.body.email[i],
+          ref_name: req.body.ref_name[i],
+          phone: req.body.phone[i],
+          position: req.body.position[i],
+          association_referee: req.body.association_referee[i],
+          org: req.body.org[i],
+        };
+        let sql = `INSERT INTO datapage SET ? ON DUPLICATE KEY UPDATE 
+                email = VALUES(email), 
+                email07 = VALUES(email07),
+                ref_name = VALUES(ref_name), 
+                phone = VALUES(phone), 
+                position = VALUES(position), 
+                association_referee = VALUES(association_referee), 
+                org = VALUES(org)`;
+
+        db.query(sql, data2, (err, result) => {
+          if (err) throw err;
+        });
+      }
+    });
     res.redirect("/formpages/9");
   });
 });
@@ -1293,6 +1344,40 @@ app.get("/formpages/7", isAuthenticated, (req, res) => {
 });
 
 app.post("/formpages/7", isAuthenticated, (req, res) => {
+  const userEmail = req.session.currUser.email;
+  let data = [];
+  data.push(userEmail);
+  let {
+    research_statement,
+    teaching_statement,
+    rel_in,
+    prof_serv,
+    jour_details,
+    conf_details,
+  } = req.body;
+  // Check if the fields are defined before calling substring
+  research_statement = research_statement ? research_statement.substring(3, research_statement.length - 6) : '';
+  teaching_statement = teaching_statement ? teaching_statement.substring(3, teaching_statement.length - 6) : '';
+  rel_in = rel_in ? rel_in.substring(3, rel_in.length - 6) : '';
+  prof_serv = prof_serv ? prof_serv.substring(3, prof_serv.length - 6) : '';
+  jour_details = jour_details ? jour_details.substring(3, jour_details.length - 6) : '';
+  conf_details = conf_details ? conf_details.substring(3, conf_details.length - 6) : '';
+  data.push(
+    research_statement,
+    teaching_statement,
+    rel_in,
+    prof_serv,
+    jour_details,
+    conf_details
+  );
+  req.session.page_7 = data;
+  db.query(
+    "INSERT INTO page_7(email,research_statement, teaching_statement,rel_in,prof_serv,jour_details,conf_details) Values (?,?,?,?,?,?,?)",
+    data,
+    (err, result) => {
+      if (err) throw err;
+    }
+  );
   res.redirect("/formpages/8");
 });
 
@@ -1414,7 +1499,7 @@ app.get("/printform", (req, res) => {
             return res.status(500).send("Internal Server Error");
           }
           db.query(
-            "SELECT * FROM page_8_upload WHERE email = ?",
+            "SELECT * FROM page_8 WHERE email = ?",
             [userEmail],
             (err, uploadRows) => {
               if (err) {
@@ -1448,7 +1533,7 @@ app.get("/printform", (req, res) => {
                             console.error("Error retrieving upload details:", err);
                             return res.status(500).send("Internal Server Error");
                           }
-                          db.query(
+                         db.query(
                             "SELECT * FROM datapage WHERE email = ?",
                             [userEmail],
                             (err, publications) => {
@@ -1655,7 +1740,7 @@ app.get("/printform", (req, res) => {
                                                                                                                           res.render("formpages/print.ejs", {
                                                                                                                             rows, personalRows, educationaldetails,
                                                                                                                             research, Industrial,
-                                                                                                                            edu_additionaldetails, present, employhist, teaching, aosaor, publications, top10publications, patents, book_chapters, books, googlelink, pg_thesis, ug_thesis, phd_thesis, awards, training, membership, sponsoredprojects, consultancyprojects, datapage, imagePath, page_7
+                                                                                                                            edu_additionaldetails, present, employhist, teaching, aosaor, publications, top10publications, patents, book_chapters, books, googlelink, pg_thesis, ug_thesis, phd_thesis, awards, training, membership, sponsoredprojects, consultancyprojects,datapage, imagePath,page_7
                                                                                                                             , sign_path, applicationdetails
                                                                                                                           });
                                                                                                                         });
@@ -1686,7 +1771,7 @@ app.get("/printform", (req, res) => {
                     });
                 });
             });
-        });
+       });
     });
 });
 
